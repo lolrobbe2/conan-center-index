@@ -1,4 +1,9 @@
 sources:
+  "":
+    url:
+  "2.5.6":
+    url: "https://github.com/DiligentGraphics/DiligentCore/archive/refs/tags/v2.5.6.tar.gz"
+    sha256: "abc190c05ee7e5ef2bba52fcbc5fdfe2256cce3435efba9cfe263a386653f671"
   "api.252009":
     url: "https://github.com/DiligentGraphics/DiligentCore/archive/refs/tags/API252009.tar.gz"
     sha256: "48d62ba72551166ea47eec4d2ad0589811e51c76c40d1998ad5049096efe8c19"
