@@ -8,7 +8,7 @@ from conan.tools.microsoft import visual
 from conan.tools.apple import is_apple_os
 import os
 
-required_conan_version = ">=1.52.0"
+required_conan_version = ">=2"
 
 
 class DiligentCoreConan(ConanFile):
@@ -43,8 +43,7 @@ class DiligentCoreConan(ConanFile):
 
     @property
     def _minimum_cpp_standard(self):
-        return 14
-
+        return 17
     def validate(self):
         if self.settings.compiler.get_safe("cppstd"):
             check_min_cppstd(self, self._minimum_cpp_standard)
@@ -62,7 +61,7 @@ class DiligentCoreConan(ConanFile):
     def export_sources(self):
         copy(self, "conan_deps.cmake", src=self.recipe_folder, dst=os.path.join(self.export_sources_folder, "src"), keep_path=False)
         export_conandata_patches(self)
-        
+
     def source(self):
         get(self, **self.conan_data["sources"][self.version], strip_root=True)
 
@@ -109,26 +108,36 @@ class DiligentCoreConan(ConanFile):
                         "project(DiligentCore)\n\ninclude(conan_deps.cmake)")
 
     def build_requirements(self):
-        self.tool_requires("cmake/[>=3.24 <4]")
+        self.tool_requires("cmake/[>=4 <5]", visible=True)
 
     def requirements(self):
+
         self.requires("opengl/system")
         if self.settings.os == "Linux":
-            self.requires("wayland/1.22.0")
-
-        self.requires("spirv-cross/1.3.224.0")
-        self.requires("spirv-tools/1.3.224.0")
-        if self.options.with_glslang:
-            self.requires("glslang/1.3.224.0")
-        self.requires("vulkan-headers/1.3.224.0")
-        self.requires("vulkan-validationlayers/1.3.224.1")
-        self.requires("volk/1.3.224.0")
-        self.requires("xxhash/0.8.1")
+            self.requires("wayland/[>=1.22.0]")
+        if(Version(self.version) > "2.5.2"):
+            self.requires("spirv-cross/1.4.350.0")
+            self.requires("spirv-tools/1.4.350.0")
+            self.requires("spirv-headers/1.4.350.0")
+            if self.options.with_glslang:
+                self.requires("glslang/1.4.350.0")
+            self.requires("vulkan-headers/1.4.350.0")
+            self.requires("volk/1.4.350.0")
+            self.requires("xxhash/0.8.3")
+        else:
+            self.requires("spirv-cross/1.3.268.0")
+            self.requires("spirv-tools/1.3.268.0")
+            self.requires("spirv-headers/1.3.268.0")
+            if self.options.with_glslang:
+                self.requires("glslang/1.3.268.0")
+            self.requires("vulkan-headers/1.3.268.0")
+            self.requires("volk/1.3.268.0")
+            self.requires("xxhash/0.8.1")
 
         if self.settings.os in ["Linux", "FreeBSD"]:
             self.requires("xorg/system")
             if not cross_building(self, skip_x64_x86=True):
-                self.requires("xkbcommon/1.4.1")
+                self.requires("xkbcommon/[>=1.4.1]")
 
     def _diligent_platform(self):
         if self.settings.os == "Windows":
