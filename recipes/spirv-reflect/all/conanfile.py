@@ -45,7 +45,7 @@ class SpirvReflectConan(ConanFile):
         tc.generate()
 
     def build_requirements(self):
-        self.tool_requires("cmake/[>=3.24 <4]")
+        self.tool_requires("cmake/[>=3.24 <5]")
 
     def build(self):
         cmake = CMake(self)
