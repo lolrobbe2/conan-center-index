@@ -108,7 +108,7 @@ class DiligentCoreConan(ConanFile):
                         "project(DiligentCore)\n\ninclude(conan_deps.cmake)")
 
     def build_requirements(self):
-        self.tool_requires("cmake/[>=4 <5]", visible=True)
+        self.tool_requires("cmake/[>=3.24 <5]", visible=True)
 
     def requirements(self):
 
